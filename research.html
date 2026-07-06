@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Threat Research — Keerthiraj Nagaraj</title>
+<meta name="description" content="Unit 42 threat research, timely threat intelligence IOC releases, and media coverage by Keerthiraj Nagaraj.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav">
+    <a href="index.html" class="nav-brand"><span class="nav-node"></span> Keerthiraj Nagaraj</a>
+    <button class="nav-toggle" aria-label="Toggle navigation">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="education.html">Education</a>
+      <a href="research.html" class="active">Research</a>
+      <a href="publications.html">Publications</a>
+      <a href="certifications.html">Certifications</a>
+      <a href="projects.html">Projects</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="page-hero wrap">
+    <div class="node-tag">Threat Research</div>
+    <h1>Threat Research</h1>
+    <p>Published research at Unit 42 (Palo Alto Networks), timely threat-intel IOC releases, and the media coverage that followed.</p>
+  </section>
+
+  <!-- ===== Flagship Unit 42 articles ===== -->
+  <section class="section wrap fade-in">
+    <div class="section-head">
+      <div class="node-tag">Unit 42 Research</div>
+      <h2>Flagship research articles</h2>
+      <p>Full author archive at <a href="https://unit42.paloaltonetworks.com/author/keerthiraj-nagaraj/" target="_blank" rel="noopener">unit42.paloaltonetworks.com</a>.</p>
+    </div>
+
+    <!-- Featured flagship: Phantom Squatting -->
+    <div class="featured-research" id="phantom-squatting">
+      <div>
+        <div class="featured-research-badge">&#9733; Featured · Unit 42</div>
+        <h3>Phantom Squatting: Attackers Exploit AI-Hallucinated Web Domains</h3>
+        <p>LLMs consistently hallucinate plausible-sounding web domains. This research reveals how attackers pre-register those exact hallucinated domains to intercept AI-driven traffic — creating a new class of supply-chain threat at the intersection of GenAI and cybersecurity.</p>
+        <div class="featured-research-links">
+          <a href="https://unit42.paloaltonetworks.com/phantom-squatting-hallucinated-web-domains/" target="_blank" rel="noopener">Read article ↗</a>
+          <a href="https://www.linkedin.com/posts/unit42_llms-consistently-generate-fictitious-web-activity-7478873454377816064-MqkS/" target="_blank" rel="noopener">LinkedIn ↗</a>
+        </div>
+      </div>
+      <div class="featured-impact">
+        <span class="impact-n">9</span>
+        <span class="impact-lbl">news outlets<br>covered this</span>
+      </div>
+    </div>
+
+    <!-- Other Unit 42 articles -->
+    <div class="grid-2">
+      <div class="card article-card">
+        <div class="art-meta">Unit 42</div>
+        <h3>Impersonation Campaigns Deliver Gh0st RAT</h3>
+        <p>Analysis of trojanized installers and impersonation campaigns used to deliver Gh0st RAT malware, including infrastructure mapping and detection patterns.</p>
+        <div class="card-footer">
+          <a href="https://unit42.paloaltonetworks.com/impersonation-campaigns-deliver-gh0st-rat/" target="_blank" rel="noopener">Read article ↗</a>
+          <a href="https://www.linkedin.com/feed/update/urn:li:share:7396341630779351040/" target="_blank" rel="noopener">LinkedIn ↗</a>
+        </div>
+      </div>
+
+      <div class="card article-card">
+        <div class="art-meta">Unit 42</div>
+        <h3>Graph Neural Networks for Threat Detection</h3>
+        <p>How GNNs map and identify malicious campaign infrastructure at scale — the research foundation behind GraPhish and the patented proactive-crawling system.</p>
+        <div class="card-footer">
+          <a href="https://unit42.paloaltonetworks.com/graph-neural-networks/" target="_blank" rel="noopener">Read article ↗</a>
+          <a href="https://www.linkedin.com/feed/update/urn:li:share:7284965264549408769/" target="_blank" rel="noopener">LinkedIn ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Conference talks ===== -->
+  <section class="section wrap fade-in">
+    <div class="section-head">
+      <div class="node-tag">Conference Talks</div>
+      <h2>Conference talks</h2>
+    </div>
+    <div class="card article-card talk-card">
+      <div class="art-meta">Virus Bulletin 2024 (VB2024)</div>
+      <h3>Proactively Hunting for Low-Reputed Infrastructure Used by Large Cybercrimes and APTs</h3>
+      <p>Presented approach for using smart crawling and Graph AI to proactively discover stealthy malicious domains, files, and low-reputation IPs — with case studies on Gamaredon, FIN7, and a large postal-impersonation campaign, ahead of detection by services like VirusTotal.</p>
+      <div class="card-footer">
+        <a href="https://www.virusbulletin.com/conference/vb2024/abstracts/proactively-hunting-low-reputed-infrastructure-used-large-cybercrimes-and-apts/" target="_blank" rel="noopener">Talk abstract ↗</a>
+        <span class="muted">M. Nabeel, K. Nagaraj, J. Szurdi, A. Starov</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Media coverage ===== -->
+  <section class="section wrap fade-in">
+    <div class="section-head">
+      <div class="node-tag">Media Coverage</div>
+      <h2>Media coverage — Phantom Squatting</h2>
+      <p>Independent coverage of the AI-hallucinated domain research across security trade press.</p>
+    </div>
+    <div class="media-strip">
+      <a class="media-chip" href="https://www.darkreading.com/endpoint-security/phantom-squatting-ai-driven-supply-chain-threat" target="_blank" rel="noopener"><span class="dot"></span> Dark Reading</a>
+      <a class="media-chip" href="https://thehackernews.com/2026/07/phantom-squatting-uses-ai-hallucinated.html" target="_blank" rel="noopener"><span class="dot"></span> The Hacker News</a>
+      <a class="media-chip" href="https://www.scworld.com/brief/attackers-exploit-ai-hallucinated-web-domains-through-phantom-squatting" target="_blank" rel="noopener"><span class="dot"></span> SC Media</a>
+      <a class="media-chip" href="https://cybernews.com/security/phantom-squatting-hallucinated-domains-cyber-attacks/" target="_blank" rel="noopener"><span class="dot"></span> Cybernews</a>
+      <a class="media-chip" href="https://www.cybersecurity-insiders.com/meet-another-cyber-threat-in-the-form-of-phantom-squatting/" target="_blank" rel="noopener"><span class="dot"></span> Cybersecurity Insiders</a>
+      <a class="media-chip" href="https://tech.news.am/eng/news/7416/attackers-use-phantom-domains-generated-by-ai-for-phishing.html" target="_blank" rel="noopener"><span class="dot"></span> Tech.News.Am</a>
+      <a class="media-chip" href="https://gbhackers.com/ai-hallucinated-domains/amp/" target="_blank" rel="noopener"><span class="dot"></span> GBHackers</a>
+      <a class="media-chip" href="https://quasa.io/media/phantom-squatting-hackers-turn-ai-hallucinations-into-a-free-phishing-buffet" target="_blank" rel="noopener"><span class="dot"></span> Quasa</a>
+      <a class="media-chip" href="https://www.ibtimes.sg/ai-hallucinations-put-llm-users-risk-phantom-squatting-poses-new-cyber-threat-88911" target="_blank" rel="noopener"><span class="dot"></span> IBTimes Singapore</a>
+    </div>
+  </section>
+
+  <!-- ===== Timely threat intel ===== -->
+  <section class="section wrap fade-in" style="border-bottom:none;">
+    <div class="section-head">
+      <div class="node-tag">Threat Intel IOCs</div>
+      <h2>Timely threat intelligence releases</h2>
+      <p>Rapid IOC releases co-authored for the <a href="https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel" target="_blank" rel="noopener">Unit42-timely-threat-intel</a> GitHub repo, announced via LinkedIn and X.</p>
+    </div>
+
+    <div class="intel-list">
+
+      <div class="intel-item threat-high">
+        <div class="ii-top"><h4>Montana Empire — AI-driven phishing infrastructure</h4><span class="ii-date mono">2026-04-07</span></div>
+        <div class="ioc-tags"><span class="ioc-tag tag-ai">AI-driven</span><span class="ioc-tag tag-phishing">Phishing</span></div>
+        <div class="intel-links" style="margin-top:10px;">
+          <a href="https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2026-04-07-Montana-Empire.txt" target="_blank" rel="noopener">GitHub IOCs ↗</a>
+          <a href="https://www.linkedin.com/posts/unit42_ai-phishing-activity-7447644945215119360-3ohE/" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a href="https://x.com/Unit42_Intel/status/2041879323963982303" target="_blank" rel="noopener">X ↗</a>
+        </div>
+      </div>
+
+      <div class="intel-item threat-medium">
+        <div class="ii-top"><h4>SEO poisoning campaign — traffic ticket search portal phishing</h4><span class="ii-date mono">2026-01-30</span></div>
+        <div class="ioc-tags"><span class="ioc-tag tag-scam">SEO Poisoning</span><span class="ioc-tag tag-phishing">Phishing</span></div>
+        <div class="intel-links" style="margin-top:10px;">
+          <a href="https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2026-01-30-IOCs-for-traffic-ticket-search-portal-themed-phishing.txt" target="_blank" rel="noopener">GitHub IOCs ↗</a>
+          <a href="https://www.linkedin.com/posts/unit42_we-identified-an-seo-poisoning-campaign-pushing-activity-7423130915578658816-A3Ts/" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a href="https://x.com/Unit42_Intel/status/2017365295145381998" target="_blank" rel="noopener">X ↗</a>
+        </div>
+      </div>
+
+      <div class="intel-item threat-high">
+        <div class="ii-top"><h4>Multi-Stage Android Malware Campaign</h4><span class="ii-date mono">2025-10-16</span></div>
+        <div class="ioc-tags"><span class="ioc-tag tag-malware">Malware</span><span class="ioc-tag tag-malware">Android</span></div>
+        <div class="intel-links" style="margin-top:10px;">
+          <a href="https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2025-10-16-Multi-Stage-Android-Malware-Campaign.md" target="_blank" rel="noopener">GitHub IOCs ↗</a>
+          <a href="https://www.linkedin.com/posts/unit42_android-malware-obfuscation-activity-7384975263950041088-IS9i/" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a href="https://x.com/Unit42_Intel/status/1979209638504432125" target="_blank" rel="noopener">X ↗</a>
+        </div>
+      </div>
+
+      <div class="intel-item threat-medium">
+        <div class="ii-top"><h4>Chinese-language campaign impersonating legitimate applications</h4><span class="ii-date mono">2025-05-30</span></div>
+        <div class="ioc-tags"><span class="ioc-tag tag-malware">Malware</span><span class="ioc-tag tag-phishing">Impersonation</span></div>
+        <div class="intel-links" style="margin-top:10px;">
+          <a href="https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2025-05-30-IOCs-for-Chinese-language-campaign-impersonating-legitimate-applications.txt" target="_blank" rel="noopener">GitHub IOCs ↗</a>
+          <a href="https://www.linkedin.com/posts/unit42_campaign-malware-activity-7334295314608136192-8J_I/" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a href="https://x.com/Unit42_Intel/status/1928529684343501093" target="_blank" rel="noopener">X ↗</a>
+        </div>
+      </div>
+
+      <div class="intel-item threat-high">
+        <div class="ii-top"><h4>Chinese-language trojanized installers (Gh0st RAT)</h4><span class="ii-date mono">2025-03-19</span></div>
+        <div class="ioc-tags"><span class="ioc-tag tag-malware">RAT</span><span class="ioc-tag tag-malware">Trojanized</span></div>
+        <div class="intel-links" style="margin-top:10px;">
+          <a href="https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2025-03-19-IOCs-for-Chinese-Language-trojanized-installers.txt" target="_blank" rel="noopener">GitHub IOCs ↗</a>
+          <a href="https://www.linkedin.com/posts/unit42_trojanized-malware-ghostrat-activity-7308519731873951745-tTnS/" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a href="https://x.com/Unit42_Intel/status/1902754112988471537" target="_blank" rel="noopener">X ↗</a>
+        </div>
+      </div>
+
+      <div class="intel-item threat-medium">
+        <div class="ii-top"><h4>Crypto investment scam phishing campaign</h4><span class="ii-date mono">2025-02-06</span></div>
+        <div class="ioc-tags"><span class="ioc-tag tag-scam">Crypto Scam</span><span class="ioc-tag tag-phishing">Phishing</span></div>
+        <div class="intel-links" style="margin-top:10px;">
+          <a href="https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2025-02-06-IOCs-for-Crypto-investment-scam-phishing-campaign.txt" target="_blank" rel="noopener">GitHub IOCs ↗</a>
+          <a href="https://www.linkedin.com/posts/unit42_cryptoscamalert-scam-phishing-activity-7293690750926565376-GeGV/" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a href="https://x.com/Unit42_Intel/status/1887925128106844183" target="_blank" rel="noopener">X ↗</a>
+        </div>
+      </div>
+
+      <div class="intel-item threat-medium">
+        <div class="ii-top"><h4>xAI crypto token presale scam</h4><span class="ii-date mono">2024-10-30</span></div>
+        <div class="ioc-tags"><span class="ioc-tag tag-scam">Crypto Scam</span></div>
+        <div class="intel-links" style="margin-top:10px;">
+          <a href="https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2024-10-30-IOCs-for-xAI-crypto-scam.txt" target="_blank" rel="noopener">GitHub IOCs ↗</a>
+          <a href="https://www.linkedin.com/posts/unit42_crypto-scam-cryptoscams-activity-7257775874274406401--LCy/" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a href="https://x.com/Unit42_Intel/status/1852010236090921419" target="_blank" rel="noopener">X ↗</a>
+        </div>
+      </div>
+
+      <div class="intel-item threat-medium">
+        <div class="ii-top"><h4>Phishing campaign IOCs</h4><span class="ii-date mono">2024-10-28</span></div>
+        <div class="ioc-tags"><span class="ioc-tag tag-phishing">Phishing</span></div>
+        <div class="intel-links" style="margin-top:10px;">
+          <a href="https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2024-10-28-IOCs-for-phising-campaign.txt" target="_blank" rel="noopener">GitHub IOCs ↗</a>
+          <a href="https://www.linkedin.com/posts/unit42_phishing-activity-7257130348055048193-VBuX/" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a href="https://x.com/Unit42_Intel/status/1851364730427883683" target="_blank" rel="noopener">X ↗</a>
+        </div>
+      </div>
+
+      <div class="intel-item threat-medium">
+        <div class="ii-top"><h4>Fake shopping scam sites</h4><span class="ii-date mono">2024-10-14</span></div>
+        <div class="ioc-tags"><span class="ioc-tag tag-scam">Shopping Scam</span><span class="ioc-tag tag-scam">Fraud</span></div>
+        <div class="intel-links" style="margin-top:10px;">
+          <a href="https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2024-10-14-IOCs-for-fake-shopping-scam-sites.txt" target="_blank" rel="noopener">GitHub IOCs ↗</a>
+          <a href="https://www.linkedin.com/posts/unit42_scam-dropcaught-shoppingscams-activity-7251984189271519232-V86d/" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a href="https://x.com/Unit42_Intel/status/1846218568452481207" target="_blank" rel="noopener">X ↗</a>
+        </div>
+      </div>
+
+      <div class="intel-item threat-medium">
+        <div class="ii-top"><h4>Domains spoofing Deribit (crypto scam)</h4><span class="ii-date mono">2024-09-25</span></div>
+        <div class="ioc-tags"><span class="ioc-tag tag-scam">Crypto Scam</span><span class="ioc-tag tag-phishing">Domain Spoof</span></div>
+        <div class="intel-links" style="margin-top:10px;">
+          <a href="https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2024-09-25-IOCs-for-domains-spoofing-Deribit.txt" target="_blank" rel="noopener">GitHub IOCs ↗</a>
+          <a href="https://www.linkedin.com/posts/unit42_crypto-scams-phishing-activity-7244800101808799744-v1oL/" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a href="https://x.com/Unit42_Intel/status/1839034476338286635" target="_blank" rel="noopener">X ↗</a>
+        </div>
+      </div>
+
+      <div class="intel-item threat-medium">
+        <div class="ii-top"><h4>Domains impersonating postal services (smishing)</h4><span class="ii-date mono">2024-08-07</span></div>
+        <div class="ioc-tags"><span class="ioc-tag tag-smishing">Smishing</span><span class="ioc-tag tag-phishing">Impersonation</span></div>
+        <div class="intel-links" style="margin-top:10px;">
+          <a href="https://github.com/PaloAltoNetworks/Unit42-timely-threat-intel/blob/main/2024-08-07-domains-impersonating-postal-services.txt" target="_blank" rel="noopener">GitHub IOCs ↗</a>
+          <a href="https://www.linkedin.com/posts/unit42_smishing-phishing-postalscam-activity-7227072034718015488-uDdU" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a href="https://x.com/Unit42_Intel/status/1821306417858437542" target="_blank" rel="noopener">X ↗</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer wrap">
+  <div class="footer-grid">
+    <div>
+      <div class="nav-brand" style="margin-bottom:10px;"><span class="nav-node"></span> Keerthiraj Nagaraj</div>
+      <p class="footer-note">Applied AI Researcher — Web &amp; AI Security<br>Santa Clara, CA</p>
+    </div>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/keerthirajnagaraj" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/Keerthiraj-Nagaraj" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://scholar.google.com/citations?hl=en&user=zA0x51YAAAAJ" target="_blank" rel="noopener">Scholar</a>
+      <a href="https://www.researchgate.net/profile/Keerthiraj-Nagaraj" target="_blank" rel="noopener">ResearchGate</a>
+      <a href="mailto:keerthi.n250@gmail.com">Email</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
