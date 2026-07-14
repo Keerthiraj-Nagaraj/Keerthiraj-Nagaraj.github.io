@@ -1,13 +1,14 @@
 // ===========================================================
-// Knowledge Graph — hybrid force-directed graph with a pinned
-// career spine, category clustering, and collapsible branches
+// Knowledge Graph — 3-level force-directed graph: 5 pinned career
+// nodes -> category nodes (Publications, Patents, Certifications,
+// Conference Talks) -> individual items, revealed on click.
+// Media Coverage is a link-through node straight to research.html.
 // (Home page signature element)
 // ===========================================================
 
 const KG_COLORS = {
   degree:  '#4C5FD5',
   role:    '#0B7285',
-  area:    '#E8590C',
   pub:     '#1C7ED6',
   patent:  '#D6336C',
   cert:    '#2F9E44',
@@ -16,17 +17,28 @@ const KG_COLORS = {
 };
 
 const KG_CAT_LABEL = {
-  degree: 'Degree', role: 'Role', area: 'Research area', pub: 'Publication',
+  degree: 'Degree', role: 'Role', pub: 'Publication',
   patent: 'Patent', cert: 'Certification', media: 'Media coverage', talk: 'Conference talk'
 };
 
-// Node radius by category
-const KG_R = { degree: 26, role: 24, area: 18, pub: 12, patent: 13, cert: 10, media: 15, talk: 12 };
+// Node radius by category (leaf items + spine)
+const KG_R = { degree: 26, role: 24, pub: 12, patent: 13, cert: 10, media: 15, talk: 12 };
+const KG_R_CATEGORY = 22; // flat radius for auto-generated category (Level-1) nodes
 
-// Vertical cluster band per category, relative to its spine parent: -1 = above, 1 = below, small = close
-const KG_BAND = { area: -0.45, cert: -1, pub: 1, patent: 1, talk: 1, media: 1 };
+// Shape per category — d3.symbol() types. Spine (degree/role) always renders as a circle.
+const KG_SHAPE = {
+  degree: d3.symbolCircle, role: d3.symbolCircle,
+  pub:    d3.symbolCircle,
+  patent: d3.symbolDiamond,
+  cert:   d3.symbolSquare,
+  media:  d3.symbolStar,
+  talk:   d3.symbolTriangle
+};
+// d3.symbol size is area, not radius — visually different shapes need a fudge factor
+// to read as roughly the same size as a circle of the same nominal radius.
+const KG_SHAPE_CORRECTION = { patent: 1.3, cert: 1.1, media: 1.7, talk: 1.4 };
 
-// ===== Node data: id, category, short label (on graph), parent (spine id, for clustering + collapse), and detail info =====
+// ===== Node data: id, category, short label (on graph), parent (for clustering + collapse), and detail info =====
 const KG_NODES = [
   // ---- Career spine (pinned left to right) ----
   { id:'be', cat:'degree', label:"B.E. '15", spine:0,
@@ -37,36 +49,14 @@ const KG_NODES = [
     body:'University of Florida, Dept. of Electrical & Computer Engineering. GPA 3.96/4.0. Began research at the Wireless and Mobile Systems Laboratory under Dr. Janise McNair.' },
   { id:'phd', cat:'degree', label:"Ph.D. '22", spine:2,
     period:'2017 — 2022', title:'PhD, Electrical & Computer Engineering',
-    body:'"Graph and Machine Learning Solutions for Smart Grid and Mobile Network Security" — University of Florida. Authored 15+ publications (200+ citations) on ML for network security.',
+    body:'"Graph and Machine Learning Solutions for Smart Grid and Mobile Network Security" — University of Florida. Authored 15+ publications (200+ citations) on ML for network security. Includes a Data Scientist internship at Palo Alto Networks (May–Aug 2021), engineering URL-based features and training XGBoost models for phishing detection on PanDB.',
     url:'https://iot.institute.ufl.edu/2020/12/graduate-student-wins-awards-in-coding-and-hack-a-thon-competitions/', urlLabel:'Featured — UF IoT Institute' },
   { id:'staffds', cat:'role', label:'Staff DS', spine:3,
     period:'Jun 2022 — May 2025', title:'Staff Data Scientist, Palo Alto Networks',
     body:'Web Security Research team. Built graph learning, ML, and GenAI-based solutions for Advanced URL Filtering (AURL), part of Cloud-Delivered Security Services.' },
   { id:'srstaff', cat:'role', label:'Sr Staff AI Sci.', spine:4,
     period:'May 2025 — Present', title:'Sr Staff AI Scientist, Palo Alto Networks',
-    body:'Leading agentic AI systems combining LLMs, tools, and knowledge graphs for cybersecurity decision-making. Architecting AI to anticipate and neutralize novel LLM-generated URL threats.' },
-
-  // ---- Branch: internship ----
-  { id:'intern', cat:'role', label:"PAN Intern '21", parent:'phd',
-    period:'May 2021 — Aug 2021', title:'Data Scientist Intern, Palo Alto Networks',
-    body:"PanDB (Advanced URL Filtering) Data Science team. Engineered URL-based features and trained XGBoost models on millions of samples for phishing detection. Presented findings at PAN's 2021 Annual Threat Summit." },
-
-  // ---- Research areas ----
-  { id:'smartgrid', cat:'area', label:'Smart Grid', parent:'phd',
-    period:'Research area', title:'Smart Grid Security',
-    body:'Graph/ML-based bad-data detection, false data injection (FDI) diagnosis, and cyber-physical state estimation for smart grid infrastructure. Core of PhD dissertation work.' },
-  { id:'mobilenet', cat:'area', label:'Mobile Nets', parent:'phd',
-    period:'Research area', title:'Mobile & Tactical Network Security',
-    body:'Vulnerability assessment via influence metrics in mobile social networks, and graph ML-based cyber-attack detection for mobile tactical networks (MILCOM 2023).' },
-  { id:'gnn', cat:'area', label:'GNNs', parent:'phd',
-    period:'Research area', title:'Graph Neural Networks',
-    body:'GLASS (SDN-based smart grid DDoS defense) through patented GNN methods for mapping attacker campaign infrastructure at Palo Alto Networks.' },
-  { id:'threatintel', cat:'area', label:'Threat Intel', parent:'staffds',
-    period:'Research area', title:'Threat Intelligence',
-    body:'Unit 42 published research on phishing infrastructure, hallucinated AI domains, and malware campaigns — plus timely threat intel IOC releases with global media coverage.' },
-  { id:'genai', cat:'area', label:'GenAI / Agentic', parent:'srstaff',
-    period:'Research area', title:'GenAI & Agentic AI Systems',
-    body:'GraphSeek — a GraphRAG-powered agentic system automating threat-insight extraction and campaign discovery across large threat intel feeds.' },
+    body:'Web Security Research team, leading agentic AI systems combining LLMs, tools, and knowledge graphs for cybersecurity decision-making. Architecting AI to anticipate and neutralize novel LLM-generated URL threats — research published in collaboration with the Unit 42 publishing team.' },
 
   // ---- BE-era publications ----
   { id:'pub_wimax_relay', cat:'pub', label:'WiMAX Relay', parent:'be',
@@ -137,12 +127,12 @@ const KG_NODES = [
     period:'Filed Apr 2025 · Palo Alto Networks', title:'GraphSeek — GraphRAG-powered Threat Intelligence (Patent)',
     body:'Agentic AI system combining GraphRAG, LLMs, and knowledge graphs for automated detection and attribution of malicious campaign IoCs.' },
   { id:'patent_phantom', cat:'patent', label:'Phantom Sq.', parent:'srstaff',
-    period:'Unit 42 Research + Patent Filed Oct 2025', title:'Phantom Squatting — AI-Hallucinated Domain Research',
-    body:'Attackers pre-register LLM-hallucinated domain names to intercept AI-driven traffic before it happens. Flagship Unit 42 research, patent pending Oct 2025.',
-    url:'https://unit42.paloaltonetworks.com/phantom-squatting-hallucinated-web-domains/', urlLabel:'Read Unit 42 article' },
-  { id:'media_coverage', cat:'media', label:'Media · 9 outlets', parent:'srstaff',
-    period:'Jul 2025 — Jul 2026', title:'Media coverage of Phantom Squatting',
-    body:'Independent coverage across 9 security trade outlets: Dark Reading, The Hacker News, SC Media, Cybernews, Cybersecurity Insiders, Tech.News.Am, GBHackers, Quasa, and IBTimes Singapore.',
+    period:'Patent Filed Oct 2025', title:'Phantom Squatting — AI-Hallucinated Domain Research',
+    body:'Attackers pre-register LLM-hallucinated domain names to intercept AI-driven traffic before it happens. Flagship research published in collaboration with Unit 42, patent pending Oct 2025.',
+    url:'https://unit42.paloaltonetworks.com/phantom-squatting-hallucinated-web-domains/', urlLabel:'Read the article' },
+  { id:'media_coverage', cat:'media', label:'Media Coverage', parent:'srstaff', linkThrough:true,
+    period:'Jul 2025 — Present', title:'Media coverage of Phantom Squatting',
+    body:'Independent coverage of the Phantom Squatting research across security trade press — click through for the full, continually updated list.',
     url:'research.html#phantom-squatting', urlLabel:'See all coverage' },
 
   // ---- Certifications — PhD era ----
@@ -207,46 +197,10 @@ const KG_NODES = [
     url:'https://learn.deeplearning.ai/accomplishments/e61b5b97-2042-4fd2-bfc6-5eed274d8efc', urlLabel:'Show credential' }
 ];
 
-// ===== Edges: [source, target, optional label] =====
+// ===== Explicit edges: only the career spine chain. Everything else (spine->category,
+// category->leaf, spine->media) is generated at runtime from each node's `parent`. =====
 const KG_LINKS = [
-  // Career spine
   ['be','ms',''], ['ms','phd',''], ['phd','staffds','promoted'], ['staffds','srstaff','promoted'],
-  // Internship (concurrent with PhD)
-  ['phd','intern','interned'],
-  // Research areas
-  ['phd','smartgrid',''], ['phd','mobilenet',''], ['phd','gnn',''],
-  ['staffds','gnn',''], ['staffds','threatintel',''], ['srstaff','genai',''],
-  // BE-era publications
-  ['be','pub_wimax_relay','published'], ['be','pub_wimax_gep','published'], ['be','pub_wimax_qos','published'],
-  // PhD-era publications
-  ['phd','pub_dissertation','authored'],
-  ['phd','pub_hybridiet','published'], ['smartgrid','pub_hybridiet',''],
-  ['phd','pub_corrdet','published'], ['smartgrid','pub_corrdet',''],
-  ['phd','pub_glass','published'], ['gnn','pub_glass',''], ['smartgrid','pub_glass',''],
-  ['phd','pub_naps','published'], ['smartgrid','pub_naps',''],
-  ['phd','pub_pesgm2021','published'], ['smartgrid','pub_pesgm2021',''],
-  ['phd','pub_appsci2021','published'], ['smartgrid','pub_appsci2021',''],
-  ['phd','pub_mobiwac','published'], ['mobilenet','pub_mobiwac',''],
-  ['phd','pub_pesgm2019','published'], ['smartgrid','pub_pesgm2019',''],
-  ['phd','pub_pesgm2022','published'], ['smartgrid','pub_pesgm2022',''],
-  ['phd','pub_appsci2022','published'], ['smartgrid','pub_appsci2022',''],
-  ['phd','pub_ietsg2022','published'], ['smartgrid','pub_ietsg2022',''],
-  // Staff DS-era pub, talk, patents
-  ['staffds','pub_milcom','published'], ['mobilenet','pub_milcom',''],
-  ['staffds','talk_vb2024','presented'],
-  ['staffds','patent_gnn','filed'], ['gnn','patent_gnn',''], ['threatintel','patent_gnn',''],
-  ['staffds','patent_crawl','filed'], ['threatintel','patent_crawl',''],
-  // Sr Staff-era patents & media
-  ['srstaff','patent_graphseek','filed'], ['genai','patent_graphseek',''],
-  ['srstaff','patent_phantom','filed'], ['genai','patent_phantom',''], ['threatintel','patent_phantom',''],
-  ['patent_phantom','media_coverage','covered by'],
-  // Certifications — PhD era
-  ['phd','cert_gcp_bigdata','earned'], ['phd','cert_graph_analytics','earned'], ['phd','cert_neo4j','earned'],
-  ['phd','cert_tf_intro','earned'], ['phd','cert_dl_cv','earned'], ['phd','cert_cnn_tf','earned'],
-  ['phd','cert_nlp_tf','earned'], ['phd','cert_seq_ts','earned'], ['phd','cert_tf_specialization','earned'],
-  ['phd','cert_ibm_quantum','earned'], ['phd','cert_quantum_intro','earned'], ['phd','cert_nvidia_anomaly','earned'],
-  // Certifications — Staff DS era
-  ['staffds','cert_genai_intro','earned'], ['staffds','cert_gemini_multimodal','earned'], ['staffds','cert_kg_rag','earned']
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -260,7 +214,38 @@ document.addEventListener('DOMContentLoaded', () => {
   const byId = Object.fromEntries(KG_NODES.map(n => [n.id, n]));
   const nodes = KG_NODES.map(n => ({ ...n }));
   const links = KG_LINKS.map(([s, t, label]) => ({ source: s, target: t, label: label || '' }));
+
+  // ----- Generate Level-1 category nodes (Publications, Patents, Certifications, Talks) -----
+  // by grouping leaf items by (parent spine, category). Media is excluded — it's a single
+  // link-through node straight to the spine, not an expandable category.
+  const CATEGORIZABLE = ['pub', 'patent', 'cert', 'talk'];
+  const catGroups = {};
+  nodes.forEach(n => {
+    if (n.spine !== undefined || !CATEGORIZABLE.includes(n.cat)) return;
+    const key = n.parent + '|' + n.cat;
+    (catGroups[key] = catGroups[key] || []).push(n);
+  });
+  const categoryNodes = Object.entries(catGroups).map(([key, items]) => {
+    const [spineId, cat] = key.split('|');
+    const id = spineId + '__' + cat;
+    items.forEach(it => { it.parent = id; }); // re-parent leaves onto the new category node
+    return {
+      id, cat, isCategory: true, parent: spineId,
+      label: KG_CAT_LABEL[cat],
+      period: '', title: `${KG_CAT_LABEL[cat]} (${items.length})`,
+      body: `Click to view the ${items.length} item${items.length > 1 ? 's' : ''} in this category.`,
+    };
+  });
+  nodes.push(...categoryNodes);
+
   const nodeById = Object.fromEntries(nodes.map(n => [n.id, n]));
+
+  // ----- Generate links: spine->category, and every remaining parent->child edge -----
+  categoryNodes.forEach(cn => links.push({ source: cn.parent, target: cn.id, label: '' }));
+  nodes.forEach(n => {
+    if (n.spine !== undefined || n.isCategory || !n.parent) return;
+    links.push({ source: n.parent, target: n.id, label: '' });
+  });
 
   const W = wrap.clientWidth || 900;
   const H = wrap.clientHeight || 620;
@@ -268,27 +253,29 @@ document.addEventListener('DOMContentLoaded', () => {
   const spineIds = spineNodes.map(n => n.id);
   const spineCount = spineNodes.length;
   spineNodes.forEach(n => {
-    n.fx = 80 + (n.spine / (spineCount - 1)) * (W - 160);
+    n.fx = 150 + (n.spine / (spineCount - 1)) * (W - 300);
     n.fy = H / 2;
   });
 
-  // ----- Group non-spine nodes by (parent, category) for clustering layout -----
-  const groups = {};
-  nodes.forEach(n => {
-    if (!n.parent) return;
-    const key = n.parent + '|' + n.cat;
-    (groups[key] = groups[key] || []).push(n);
-  });
-  Object.values(groups).forEach(group => {
-    const cols = Math.max(2, Math.ceil(Math.sqrt(group.length * 1.8)));
-    group.forEach((node, i) => {
-      node._col = (i % cols) - (cols - 1) / 2;
-      node._row = Math.floor(i / cols);
+  // ----- Fan layout: deterministic angle/radius for every non-spine node around its parent -----
+  const siblingGroups = {};
+  nodes.forEach(n => { if (n.parent) (siblingGroups[n.parent] = siblingGroups[n.parent] || []).push(n); });
+  // angle=0 is straight up (x = parent.x + sin(angle)*r, y = parent.y - cos(angle)*r),
+  // so every fan is centered above its parent, just with a narrower spread for
+  // categories (tight to their spine) and a wider one for leaves (more siblings to fit).
+  Object.entries(siblingGroups).forEach(([parentId, group]) => {
+    const parent = nodeById[parentId];
+    const aroundSpine = parent.spine !== undefined;
+    const spread = aroundSpine ? Math.PI * 0.6 : Math.PI * 1.1;
+    const start = -spread / 2;
+    group.forEach((n, i) => {
+      n._angle = group.length === 1 ? 0 : start + (i / (group.length - 1)) * spread;
+      n._radius = aroundSpine ? 95 : (32 + Math.min(group.length, 14) * 5);
     });
   });
 
-  // ----- Collapsible spine branches: collapsed by default except the current role -----
-  const collapsedSpines = new Set(spineIds.filter(id => id !== 'srstaff'));
+  // ----- Collapsible category nodes: every category starts collapsed, spine + categories always visible -----
+  const collapsedIds = new Set(categoryNodes.map(n => n.id));
   const childCount = id => nodes.filter(n => n.parent === id).length;
 
   // ----- Category legend filter state -----
@@ -296,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function isVisible(n) {
     if (!activeCats.has(n.cat)) return false;
-    if (n.parent && collapsedSpines.has(n.parent)) return false;
+    if (n.parent && collapsedIds.has(n.parent)) return false;
     return true;
   }
   function linkVisible(l) {
@@ -309,49 +296,61 @@ document.addEventListener('DOMContentLoaded', () => {
   svg.call(d3.zoom().scaleExtent([0.3, 3]).on('zoom', e => g.attr('transform', e.transform)))
      .on('dblclick.zoom', null);
 
+  function nodeRadius(d) { return d.isCategory ? KG_R_CATEGORY : (KG_R[d.cat] || 12); }
+  function shapeFor(d) { return d.spine !== undefined ? d3.symbolCircle : (KG_SHAPE[d.cat] || d3.symbolCircle); }
+  function sizeFor(d) {
+    const r = nodeRadius(d);
+    const correction = KG_SHAPE_CORRECTION[d.cat] || 1;
+    return r * r * Math.PI * correction;
+  }
+
   const sim = d3.forceSimulation(nodes)
-    .force('link', d3.forceLink(links).id(d => d.id).distance(d => (d.source.spine !== undefined && d.target.spine !== undefined) ? 230 : 55).strength(0.6))
+    .force('link', d3.forceLink(links).id(d => d.id).distance(d => {
+      if (d.source.spine !== undefined && d.target.spine !== undefined) return 230;
+      if (d.source.spine !== undefined || d.target.spine !== undefined) return 105;
+      return 50;
+    }).strength(0.25))
     .force('charge', d3.forceManyBody().strength(d => d.spine !== undefined ? -1000 : -90))
-    .force('collide', d3.forceCollide(d => (KG_R[d.cat] || 12) + 20))
-    .force('clusterX', d3.forceX(d => {
+    .force('collide', d3.forceCollide(d => nodeRadius(d) + 20))
+    .force('radialX', d3.forceX(d => {
       if (!d.parent) return d.fx;
       const p = nodeById[d.parent];
-      const spacing = d.cat === 'cert' ? 32 : 42;
-      return (p.x !== undefined ? p.x : p.fx) + (d._col || 0) * spacing;
-    }).strength(d => d.parent ? 0.3 : 0))
-    .force('clusterY', d3.forceY(d => {
+      return (p.x !== undefined ? p.x : p.fx) + Math.sin(d._angle || 0) * (d._radius || 60);
+    }).strength(d => d.parent ? 0.35 : 0))
+    .force('radialY', d3.forceY(d => {
       if (!d.parent) return d.fy;
-      const band = KG_BAND[d.cat] !== undefined ? KG_BAND[d.cat] : 1;
-      const base = Math.abs(band) < 1 ? 75 : 115;
-      return H / 2 + Math.sign(band) * (base + (d._row || 0) * 30);
-    }).strength(d => d.parent ? 0.28 : 0));
+      const p = nodeById[d.parent];
+      return (p.y !== undefined ? p.y : p.fy) - Math.cos(d._angle || 0) * (d._radius || 60);
+    }).strength(d => d.parent ? 0.35 : 0));
 
   const linkSel = g.append('g').selectAll('line').data(links).join('line').attr('class', 'kg-link');
   const linkLabelSel = g.append('g').selectAll('text').data(links.filter(l => l.label)).join('text')
     .attr('class', 'kg-link-label').attr('text-anchor', 'middle').text(d => d.label);
 
   const nodeSel = g.append('g').selectAll('g').data(nodes).join('g')
-    .attr('class', d => `kg-node cat-${d.cat}`)
+    .attr('class', d => `kg-node cat-${d.cat}${d.isCategory ? ' is-category' : ''}`)
     .call(d3.drag()
       .on('start', (e, d) => { if (!e.active) sim.alphaTarget(0.25).restart(); if (d.spine === undefined) { d.fx = d.x; d.fy = d.y; } })
       .on('drag', (e, d) => { d.fx = e.x; d.fy = d.spine !== undefined ? d.fy : e.y; })
       .on('end', (e, d) => { if (!e.active) sim.alphaTarget(0); if (d.spine === undefined) { d.fx = null; d.fy = null; } }));
 
-  nodeSel.append('circle')
-    .attr('r', d => KG_R[d.cat] || 12)
+  const symbolGenerator = d3.symbol().type(shapeFor).size(sizeFor);
+  nodeSel.append('path')
+    .attr('d', symbolGenerator)
     .attr('fill', 'var(--paper-raised)')
     .attr('stroke', d => KG_COLORS[d.cat]);
 
   nodeSel.append('text')
     .attr('class', 'kg-label')
     .attr('text-anchor', 'middle')
-    .attr('y', d => (KG_R[d.cat] || 12) + 13)
+    .attr('y', d => nodeRadius(d) + 13)
     .text(d => labelFor(d));
 
   function labelFor(d) {
+    if (d.linkThrough) return d.label + ' ↗';
     const n = childCount(d.id);
     if (n === 0) return d.label;
-    return d.label + (collapsedSpines.has(d.id) ? ` (+${n})` : ' (–)');
+    return d.label + (collapsedIds.has(d.id) ? ` (+${n})` : ' (–)');
   }
 
   function renderDetail(d) {
@@ -359,7 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     d.url2 ? `<a href="${d.url2}" target="_blank" rel="noopener">${d.url2Label || 'View'} ↗</a>` : '']
       .filter(Boolean).join(' &nbsp; ');
     detail.innerHTML = `
-      <div class="gd-period">${d.period} · ${KG_CAT_LABEL[d.cat]}</div>
+      <div class="gd-period">${d.period}${d.period ? ' · ' : ''}${KG_CAT_LABEL[d.cat]}</div>
       <h4>${d.title}</h4>
       <p>${d.body}</p>
       ${links2 ? `<p>${links2}</p>` : ''}
@@ -384,10 +383,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   nodeSel.on('click', (e, d) => {
+    if (d.linkThrough && d.url) {
+      window.location.href = d.url;
+      return;
+    }
     if (childCount(d.id) > 0) {
-      // Spine (or any parent) node: toggle expand/collapse for its branch
-      if (collapsedSpines.has(d.id)) collapsedSpines.delete(d.id);
-      else collapsedSpines.add(d.id);
+      // Category (or spine) node: toggle expand/collapse for its direct children
+      if (collapsedIds.has(d.id)) collapsedIds.delete(d.id);
+      else collapsedIds.add(d.id);
       updateVisibility();
       sim.alpha(0.5).restart();
       nodeSel.classed('dim', false).classed('active', n => n.id === d.id);
@@ -409,6 +412,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   sim.on('tick', () => {
+    // Strong spine-node charge can shove edge-adjacent branches (e.g. B.E.'s lone
+    // category) past the canvas boundary — clamp everything else back on-canvas.
+    nodes.forEach(n => {
+      if (n.spine !== undefined) return;
+      const margin = nodeRadius(n) + 40;
+      n.x = Math.max(margin, Math.min(W - margin, n.x));
+      n.y = Math.max(margin, Math.min(H - margin, n.y));
+    });
     linkSel.attr('x1', d => d.source.x).attr('y1', d => d.source.y)
            .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
     linkLabelSel.attr('x', d => (d.source.x + d.target.x) / 2).attr('y', d => (d.source.y + d.target.y) / 2 - 4);
@@ -440,9 +451,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const q = searchEl.value.trim().toLowerCase();
       if (!q) { nodeSel.classed('dim', false); linkSel.classed('dim', false); return; }
       const matched = new Set(nodes.filter(n => (n.title + ' ' + n.label).toLowerCase().includes(q)).map(n => n.id));
-      // Auto-expand any collapsed spine that contains a match
+      // Auto-expand every collapsed ancestor of a match, walking all the way up the chain
       let changed = false;
-      nodes.forEach(n => { if (matched.has(n.id) && n.parent && collapsedSpines.has(n.parent)) { collapsedSpines.delete(n.parent); changed = true; } });
+      nodes.forEach(n => {
+        if (!matched.has(n.id)) return;
+        let cur = n;
+        while (cur.parent && collapsedIds.has(cur.parent)) {
+          collapsedIds.delete(cur.parent);
+          changed = true;
+          cur = nodeById[cur.parent];
+        }
+      });
       if (changed) { updateVisibility(); sim.alpha(0.4).restart(); }
       nodeSel.classed('dim', n => !matched.has(n.id));
       linkSel.classed('dim', l => !(matched.has(l.source.id || l.source) || matched.has(l.target.id || l.target)));

@@ -385,6 +385,16 @@ p { margin: 0; }
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
+.stat-media {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.stat-media .lbl { transition: color 0.15s; }
+.stat-media:hover { background: var(--paper); }
+.stat-media:hover .lbl { color: var(--teal); }
 @media (max-width: 700px) {
   .stat-row { grid-template-columns: repeat(2, 1fr); }
 }
@@ -452,11 +462,12 @@ p { margin: 0; }
 }
 .kg-canvas-wrap:active { cursor: grabbing; }
 #kg-svg { display: block; width: 100%; height: 100%; }
-.kg-node circle {
+.kg-node circle, .kg-node path {
   stroke-width: 2px;
   cursor: pointer;
-  transition: r 0.15s, filter 0.15s;
+  transition: filter 0.15s;
 }
+.kg-node circle { transition: r 0.15s, filter 0.15s; }
 .kg-node text {
   font-family: var(--font-mono);
   font-size: 10px;
@@ -464,7 +475,9 @@ p { margin: 0; }
   pointer-events: none;
 }
 .kg-node.dim { opacity: 0.12; }
-.kg-node.active circle { filter: drop-shadow(0 0 6px rgba(76,95,213,0.55)); }
+.kg-node.active circle, .kg-node.active path { filter: drop-shadow(0 0 6px rgba(76,95,213,0.55)); }
+.kg-node.is-category circle, .kg-node.is-category path { stroke-width: 2.5px; }
+.kg-node.is-category text { font-weight: 600; }
 .kg-link { stroke: var(--line-strong); stroke-width: 1px; }
 .kg-link.dim { opacity: 0.06; }
 .kg-link.active { stroke-width: 1.6px; opacity: 0.9; }
