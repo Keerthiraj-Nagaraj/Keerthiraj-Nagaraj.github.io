@@ -328,8 +328,15 @@ p { margin: 0; }
 /* ---------- Utility ---------- */
 .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+@media (max-width: 980px) {
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
 @media (max-width: 860px) {
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .grid-4 { grid-template-columns: 1fr; }
 }
 
 .mono { font-family: var(--font-mono); }
@@ -900,11 +907,11 @@ p { margin: 0; }
 }
 
 /* ===========================================================
-   IOC threat-level border & category tags
+   IOC post border (alternating, decorative) & category tags
    =========================================================== */
 .intel-item { border-left: 3px solid var(--line-strong); }
-.intel-item.threat-high   { border-left-color: var(--accent); }
-.intel-item.threat-medium { border-left-color: var(--violet); }
+.intel-item.intel-tone-a { border-left-color: var(--accent); }
+.intel-item.intel-tone-b { border-left-color: var(--violet); }
 
 .ioc-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
 .ioc-tag {

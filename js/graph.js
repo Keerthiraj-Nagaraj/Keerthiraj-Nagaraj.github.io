@@ -2,8 +2,7 @@
 // Knowledge Graph — 3-level force-directed graph: 5 pinned career
 // nodes -> category nodes (Publications, Patents, Certifications,
 // Conference Talks) -> individual items, revealed on click.
-// Media Coverage is a link-through node straight to research.html.
-// (Home page signature element)
+// Explore page signature element.
 // ===========================================================
 
 const KG_COLORS = {
@@ -133,7 +132,7 @@ const KG_NODES = [
     period:'Patent Filed Oct 2025', title:'Phantom Squatting — AI-Hallucinated Domain Research',
     body:'Attackers pre-register LLM-hallucinated domain names to intercept AI-driven traffic before it happens. Flagship research published in collaboration with Unit 42, patent pending Oct 2025.',
     url:'https://unit42.paloaltonetworks.com/phantom-squatting-hallucinated-web-domains/', urlLabel:'Read the article' },
-  { id:'media_coverage', cat:'media', label:'Media Coverage', parent:'srstaff', linkThrough:true,
+  { id:'media_coverage', cat:'media', label:'Media Coverage', parent:'srstaff',
     period:'Jul 2025 — Present', title:'Media coverage of Phantom Squatting',
     body:'Independent coverage of the Phantom Squatting research across security trade press — click through for the full, continually updated list.',
     url:'research.html#phantom-squatting', urlLabel:'See all coverage' },
@@ -358,7 +357,6 @@ document.addEventListener('DOMContentLoaded', () => {
     .text(d => labelFor(d));
 
   function labelFor(d) {
-    if (d.linkThrough) return d.label + ' ↗';
     const n = childCount(d.id);
     if (n === 0) return d.label;
     return d.label + (collapsedIds.has(d.id) ? ` (+${n})` : ' (–)');
@@ -394,10 +392,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   nodeSel.on('click', (e, d) => {
-    if (d.linkThrough && d.url) {
-      window.location.href = d.url;
-      return;
-    }
     if (childCount(d.id) > 0) {
       // Category (or spine) node: toggle expand/collapse for its direct children
       if (collapsedIds.has(d.id)) collapsedIds.delete(d.id);
