@@ -260,6 +260,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // plenty of vertical space, so the spine runs top-to-bottom instead and fans
   // open sideways rather than upward.
   const MOBILE = W < 640;
+  // Below full desktop width (1200px+), the horizontal layout's margins/radii
+  // scale down continuously so tablet widths (640–1200px) don't hit the same
+  // fixed desktop spacing and crowd their labels together — capped at 1 so
+  // desktop (>=1200px) renders exactly as before, floored so it never gets
+  // as tight as the pre-fix crush.
+  const SCALE = Math.max(0.62, Math.min(1, W / 1200));
   const spineNodes = nodes.filter(n => n.spine !== undefined);
   const spineIds = spineNodes.map(n => n.id);
   const spineCount = spineNodes.length;
@@ -269,7 +275,8 @@ document.addEventListener('DOMContentLoaded', () => {
       n.fx = W / 2;
       n.fy = margin + (n.spine / (spineCount - 1)) * (H - margin * 2);
     } else {
-      n.fx = 150 + (n.spine / (spineCount - 1)) * (W - 300);
+      const margin = 150 * SCALE;
+      n.fx = margin + (n.spine / (spineCount - 1)) * (W - margin * 2);
       n.fy = H / 2;
     }
   });
@@ -291,8 +298,11 @@ document.addEventListener('DOMContentLoaded', () => {
       : Math.PI * 1.1;
     const start = -spread / 2;
     const mobileFan = MOBILE && aroundSpine;
+    // Fan radius needs to shrink faster than spine spacing does, or neighboring
+    // spines' fans start overlapping each other well before SCALE reaches 1.
+    const radiusScale = Math.max(0.55, Math.pow(SCALE, 1.6));
     const radius = aroundSpine
-      ? (mobileFan ? 65 + Math.min(group.length, 6) * 8 : 100 + Math.min(group.length, 6) * 10)
+      ? (mobileFan ? 65 + Math.min(group.length, 6) * 8 : (100 + Math.min(group.length, 6) * 10) * radiusScale)
       : (32 + Math.min(group.length, 14) * 5);
     const side = mobileFan && (parent.spine % 2 === 0) ? -1 : 1;
     group.forEach((n, i) => {
@@ -340,12 +350,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const sim = d3.forceSimulation(nodes)
     .force('link', d3.forceLink(links).id(d => d.id).distance(d => {
-      if (d.source.spine !== undefined && d.target.spine !== undefined) return MOBILE ? 100 : 230;
-      if (d.source.spine !== undefined || d.target.spine !== undefined) return MOBILE ? 80 : 130;
+      if (d.source.spine !== undefined && d.target.spine !== undefined) return MOBILE ? 100 : 230 * SCALE;
+      if (d.source.spine !== undefined || d.target.spine !== undefined) return MOBILE ? 80 : 130 * SCALE;
       return 50;
     }).strength(0.25))
-    .force('charge', d3.forceManyBody().strength(d => d.spine !== undefined ? (MOBILE ? -400 : -1000) : -90))
-    .force('collide', d3.forceCollide(d => nodeRadius(d) + (MOBILE ? 18 : 30)))
+    .force('charge', d3.forceManyBody().strength(d => d.spine !== undefined ? (MOBILE ? -400 : -1000 * SCALE) : -90))
+    .force('collide', d3.forceCollide(d => nodeRadius(d) + (MOBILE ? 18 : Math.round(30 * SCALE))))
     .force('radialX', d3.forceX(d => {
       if (!d.parent) return d.fx;
       const p = nodeById[d.parent];
