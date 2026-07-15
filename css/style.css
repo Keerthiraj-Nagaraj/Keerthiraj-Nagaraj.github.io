@@ -184,7 +184,7 @@ p { margin: 0; }
 }
 .nav-toggle svg { width: 24px; height: 24px; stroke: var(--ink); }
 
-@media (max-width: 760px) {
+@media (max-width: 920px) {
   .nav-links {
     position: fixed;
     top: 61px;
@@ -817,7 +817,7 @@ p { margin: 0; }
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
 }
-@media (max-width: 760px) { .contact-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 920px) { .contact-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 500px) { .contact-grid { grid-template-columns: 1fr; } }
 .contact-card {
   display: flex;
@@ -1043,7 +1043,6 @@ p { margin: 0; }
   font-family: var(--font-mono);
   font-size: 0.82rem;
   color: var(--ink-faint);
-  white-space: nowrap;
 }
 .career-role {
   position: relative;
@@ -1076,7 +1075,6 @@ p { margin: 0; }
   font-family: var(--font-mono);
   font-size: 0.8rem;
   color: var(--ink-faint);
-  white-space: nowrap;
 }
 .career-role .cr-team {
   font-family: var(--font-mono);
