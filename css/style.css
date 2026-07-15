@@ -377,18 +377,24 @@ p { margin: 0; }
   70% { box-shadow: 0 0 0 7px rgba(250,88,45,0); }
   100% { box-shadow: 0 0 0 0 rgba(250,88,45,0); }
 }
+/* Photo always sits beside the copy, at every width — it just shrinks as the
+   viewport narrows instead of ever dropping below the text. */
 .hero-top {
   display: flex;
-  align-items: center;
+  flex-direction: row;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 48px;
+  width: 100%;
 }
-.hero-copy { flex: 1 1 560px; min-width: 0; }
+.hero-copy { flex: 1 1 0%; min-width: 0; }
 .hero-photo { flex: 0 0 auto; }
 .hero-photo img {
   display: block;
   width: 240px;
   height: 240px;
+  max-width: 240px;
+  max-height: 240px;
   border-radius: 50%;
   object-fit: cover;
   object-position: 50% 22%;
@@ -396,8 +402,12 @@ p { margin: 0; }
   box-shadow: 0 16px 40px -12px rgba(16, 24, 32, 0.25);
 }
 @media (max-width: 860px) {
-  .hero-top { flex-direction: column-reverse; gap: 28px; text-align: left; }
-  .hero-photo img { width: 168px; height: 168px; }
+  .hero-top { gap: 24px; }
+  .hero-photo img { width: 130px; height: 130px; max-width: 130px; max-height: 130px; border-width: 2px; }
+}
+@media (max-width: 480px) {
+  .hero-top { gap: 16px; }
+  .hero-photo img { width: 84px; height: 84px; max-width: 84px; max-height: 84px; }
 }
 .hero h1 {
   font-family: var(--font-serif);
