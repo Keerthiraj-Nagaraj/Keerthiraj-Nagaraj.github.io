@@ -255,20 +255,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const W = wrap.clientWidth || 900;
   const H = wrap.clientHeight || 620;
+  // Below this width the canvas is taller than it is wide (phones) — a horizontal
+  // spine has no room to spread (5 nodes crush into a single point) while there's
+  // plenty of vertical space, so the spine runs top-to-bottom instead and fans
+  // open sideways rather than upward.
+  const MOBILE = W < 640;
   const spineNodes = nodes.filter(n => n.spine !== undefined);
   const spineIds = spineNodes.map(n => n.id);
   const spineCount = spineNodes.length;
   spineNodes.forEach(n => {
-    n.fx = 150 + (n.spine / (spineCount - 1)) * (W - 300);
-    n.fy = H / 2;
+    if (MOBILE) {
+      const margin = Math.max(50, Math.min(120, H * 0.12));
+      n.fx = W / 2;
+      n.fy = margin + (n.spine / (spineCount - 1)) * (H - margin * 2);
+    } else {
+      n.fx = 150 + (n.spine / (spineCount - 1)) * (W - 300);
+      n.fy = H / 2;
+    }
   });
 
-  // ----- Fan layout: deterministic angle/radius for every non-spine node around its parent -----
+  // ----- Fan layout: deterministic direction/radius for every non-spine node around its parent -----
   const siblingGroups = {};
   nodes.forEach(n => { if (n.parent) (siblingGroups[n.parent] = siblingGroups[n.parent] || []).push(n); });
-  // angle=0 is straight up (x = parent.x + sin(angle)*r, y = parent.y - cos(angle)*r),
-  // so every fan is centered above its parent, just with a narrower spread for
-  // categories (tight to their spine) and a wider one for leaves (more siblings to fit).
+  // Desktop: angle=0 is straight up (dx=sin, dy=-cos), so every fan is centered
+  // above its parent. Mobile: angle=0 is sideways (dx=±cos, dy=sin) — alternating
+  // left/right per spine node — since the spine itself now runs vertically.
+  // Narrower spread for categories (tight to their spine), wider for leaves.
   Object.entries(siblingGroups).forEach(([parentId, group]) => {
     const parent = nodeById[parentId];
     const aroundSpine = parent.spine !== undefined;
@@ -278,9 +290,21 @@ document.addEventListener('DOMContentLoaded', () => {
       ? Math.min(Math.PI * 0.95, Math.PI * 0.55 + group.length * 0.12)
       : Math.PI * 1.1;
     const start = -spread / 2;
+    const mobileFan = MOBILE && aroundSpine;
+    const radius = aroundSpine
+      ? (mobileFan ? 65 + Math.min(group.length, 6) * 8 : 100 + Math.min(group.length, 6) * 10)
+      : (32 + Math.min(group.length, 14) * 5);
+    const side = mobileFan && (parent.spine % 2 === 0) ? -1 : 1;
     group.forEach((n, i) => {
-      n._angle = group.length === 1 ? 0 : start + (i / (group.length - 1)) * spread;
-      n._radius = aroundSpine ? (100 + Math.min(group.length, 6) * 10) : (32 + Math.min(group.length, 14) * 5);
+      const angle = group.length === 1 ? 0 : start + (i / (group.length - 1)) * spread;
+      n._radius = radius;
+      if (mobileFan) {
+        n._dx = side * Math.cos(angle);
+        n._dy = Math.sin(angle);
+      } else {
+        n._dx = Math.sin(angle);
+        n._dy = -Math.cos(angle);
+      }
     });
   });
 
@@ -316,21 +340,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const sim = d3.forceSimulation(nodes)
     .force('link', d3.forceLink(links).id(d => d.id).distance(d => {
-      if (d.source.spine !== undefined && d.target.spine !== undefined) return 230;
-      if (d.source.spine !== undefined || d.target.spine !== undefined) return 130;
+      if (d.source.spine !== undefined && d.target.spine !== undefined) return MOBILE ? 100 : 230;
+      if (d.source.spine !== undefined || d.target.spine !== undefined) return MOBILE ? 80 : 130;
       return 50;
     }).strength(0.25))
-    .force('charge', d3.forceManyBody().strength(d => d.spine !== undefined ? -1000 : -90))
-    .force('collide', d3.forceCollide(d => nodeRadius(d) + 30))
+    .force('charge', d3.forceManyBody().strength(d => d.spine !== undefined ? (MOBILE ? -400 : -1000) : -90))
+    .force('collide', d3.forceCollide(d => nodeRadius(d) + (MOBILE ? 18 : 30)))
     .force('radialX', d3.forceX(d => {
       if (!d.parent) return d.fx;
       const p = nodeById[d.parent];
-      return (p.x !== undefined ? p.x : p.fx) + Math.sin(d._angle || 0) * (d._radius || 60);
+      return (p.x !== undefined ? p.x : p.fx) + (d._dx || 0) * (d._radius || 60);
     }).strength(d => d.parent ? 0.35 : 0))
     .force('radialY', d3.forceY(d => {
       if (!d.parent) return d.fy;
       const p = nodeById[d.parent];
-      return (p.y !== undefined ? p.y : p.fy) - Math.cos(d._angle || 0) * (d._radius || 60);
+      return (p.y !== undefined ? p.y : p.fy) + (d._dy || 0) * (d._radius || 60);
     }).strength(d => d.parent ? 0.35 : 0));
 
   const linkSel = g.append('g').selectAll('line').data(links).join('line').attr('class', 'kg-link');
@@ -421,7 +445,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // category) past the canvas boundary — clamp everything else back on-canvas.
     nodes.forEach(n => {
       if (n.spine !== undefined) return;
-      const margin = nodeRadius(n) + 40;
+      const margin = nodeRadius(n) + (MOBILE ? 22 : 40);
       n.x = Math.max(margin, Math.min(W - margin, n.x));
       n.y = Math.max(margin, Math.min(H - margin, n.y));
     });
