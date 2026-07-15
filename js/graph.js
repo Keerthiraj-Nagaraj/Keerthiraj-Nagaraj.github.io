@@ -13,16 +13,18 @@ const KG_COLORS = {
   patent:  '#D6336C',
   cert:    '#2F9E44',
   media:   '#AE3EC9',
-  talk:    '#5C677D'
+  talk:    '#5C677D',
+  panel:   '#E8590C'
 };
 
 const KG_CAT_LABEL = {
   degree: 'Degree', role: 'Role', pub: 'Publication',
-  patent: 'Patent', cert: 'Certification', media: 'Media coverage', talk: 'Conference talk'
+  patent: 'Patent', cert: 'Certification', media: 'Media coverage', talk: 'Conference talk',
+  panel: 'Invited Talk/Panel'
 };
 
 // Node radius by category (leaf items + spine)
-const KG_R = { degree: 26, role: 24, pub: 12, patent: 13, cert: 10, media: 15, talk: 12 };
+const KG_R = { degree: 26, role: 24, pub: 12, patent: 13, cert: 10, media: 15, talk: 12, panel: 13 };
 const KG_R_CATEGORY = 22; // flat radius for auto-generated category (Level-1) nodes
 
 // Shape per category — d3.symbol() types. Spine (degree/role) always renders as a circle.
@@ -32,11 +34,12 @@ const KG_SHAPE = {
   patent: d3.symbolDiamond,
   cert:   d3.symbolSquare,
   media:  d3.symbolStar,
-  talk:   d3.symbolTriangle
+  talk:   d3.symbolTriangle,
+  panel:  d3.symbolWye
 };
 // d3.symbol size is area, not radius — visually different shapes need a fudge factor
 // to read as roughly the same size as a circle of the same nominal radius.
-const KG_SHAPE_CORRECTION = { patent: 1.3, cert: 1.1, media: 1.7, talk: 1.4 };
+const KG_SHAPE_CORRECTION = { patent: 1.3, cert: 1.1, media: 1.7, talk: 1.4, panel: 1.6 };
 
 // ===== Node data: id, category, short label (on graph), parent (for clustering + collapse), and detail info =====
 const KG_NODES = [
@@ -134,6 +137,10 @@ const KG_NODES = [
     period:'Jul 2025 — Present', title:'Media coverage of Phantom Squatting',
     body:'Independent coverage of the Phantom Squatting research across security trade press — click through for the full, continually updated list.',
     url:'research.html#phantom-squatting', urlLabel:'See all coverage' },
+  { id:'panel_wicys', cat:'panel', label:'WiCyS Panel', parent:'srstaff',
+    period:'Jul 2026 · WiCyS Webinar', title:'Panelist — "Can AI Agents Make You Cyber-Smarter?"',
+    body:'Invited panelist for the Women in CyberSecurity (WiCyS) webinar exploring how autonomous AI agents are reshaping security operations — from automation opportunities to emerging risks.',
+    url:'https://www.wicys.org/event/webinar-can-ai-agents-make-you-cyber-smarter/', urlLabel:'Event page' },
 
   // ---- Certifications — PhD era ----
   { id:'cert_gcp_bigdata', cat:'cert', label:'GCP Big Data', parent:'phd',
@@ -266,11 +273,15 @@ document.addEventListener('DOMContentLoaded', () => {
   Object.entries(siblingGroups).forEach(([parentId, group]) => {
     const parent = nodeById[parentId];
     const aroundSpine = parent.spine !== undefined;
-    const spread = aroundSpine ? Math.PI * 0.6 : Math.PI * 1.1;
+    // More siblings need both a wider spread and more radius to keep labels from
+    // colliding — this scales with group size instead of a single fixed fan.
+    const spread = aroundSpine
+      ? Math.min(Math.PI * 0.95, Math.PI * 0.55 + group.length * 0.12)
+      : Math.PI * 1.1;
     const start = -spread / 2;
     group.forEach((n, i) => {
       n._angle = group.length === 1 ? 0 : start + (i / (group.length - 1)) * spread;
-      n._radius = aroundSpine ? 95 : (32 + Math.min(group.length, 14) * 5);
+      n._radius = aroundSpine ? (100 + Math.min(group.length, 6) * 10) : (32 + Math.min(group.length, 14) * 5);
     });
   });
 
@@ -307,11 +318,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const sim = d3.forceSimulation(nodes)
     .force('link', d3.forceLink(links).id(d => d.id).distance(d => {
       if (d.source.spine !== undefined && d.target.spine !== undefined) return 230;
-      if (d.source.spine !== undefined || d.target.spine !== undefined) return 105;
+      if (d.source.spine !== undefined || d.target.spine !== undefined) return 130;
       return 50;
     }).strength(0.25))
     .force('charge', d3.forceManyBody().strength(d => d.spine !== undefined ? -1000 : -90))
-    .force('collide', d3.forceCollide(d => nodeRadius(d) + 20))
+    .force('collide', d3.forceCollide(d => nodeRadius(d) + 30))
     .force('radialX', d3.forceX(d => {
       if (!d.parent) return d.fx;
       const p = nodeById[d.parent];

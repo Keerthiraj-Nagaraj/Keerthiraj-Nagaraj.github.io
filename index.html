@@ -11,10 +11,10 @@
 <meta property="og:url" content="https://keerthiraj-nagaraj.github.io/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500..700&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="page-home">
 
 <header class="site-header">
   <nav class="nav">
@@ -24,6 +24,8 @@
     </button>
     <div class="nav-links">
       <a href="index.html" class="active">Home</a>
+      <a href="explore.html">Explore</a>
+      <a href="career.html">Career</a>
       <a href="education.html">Education</a>
       <a href="research.html">Research</a>
       <a href="publications.html">Publications</a>
@@ -39,9 +41,9 @@
   <section class="hero">
     <canvas id="hero-canvas"></canvas>
     <div class="hero-inner wrap">
-      <div class="hero-eyebrow"><span class="pulse"></span> SR STAFF AI SCIENTIST · PALO ALTO NETWORKS</div>
+      <a href="career.html" class="hero-eyebrow"><span class="pulse"></span> SR STAFF AI SCIENTIST · PALO ALTO NETWORKS</a>
       <h1>Applied AI researcher building <span class="accent">agentic</span>, graph-based defenses for web &amp; AI security.</h1>
-      <p class="hero-sub">PhD in graph &amp; machine learning security from the University of Florida. I build agentic AI and graph neural network systems that discover malicious infrastructure before it's used — and publish what I find.</p>
+      <p class="hero-sub">PhD in graph &amp; machine learning security from the <span class="hl">University of Florida</span>. I build agentic AI and graph neural network systems that discover malicious infrastructure before it's used — and publish what I find.</p>
       <div class="hero-actions">
         <a href="research.html" class="btn btn-primary">Threat research →</a>
         <a href="publications.html" class="btn">Publications</a>
@@ -57,25 +59,15 @@
     </div>
   </section>
 
-  <!-- ============ KNOWLEDGE GRAPH ============ -->
-  <section class="section wrap fade-in" id="knowledge-graph">
-    <div class="section-head">
-      <div class="node-tag">Knowledge Graph</div>
-      <h2>Explore how it all connects</h2>
-    </div>
-
-    <div class="kg-panel">
-      <div class="kg-controls">
-        <div class="kg-legend" id="kg-legend"></div>
-        <div class="kg-search"><input type="text" id="kg-search-input" placeholder="Search the graph…" aria-label="Search the knowledge graph"></div>
+  <!-- ============ EXPLORE TEASER ============ -->
+  <section class="section wrap fade-in">
+    <div class="card" style="display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap; padding:36px;">
+      <div>
+        <div class="node-tag">Career Graph</div>
+        <h2 style="font-size:1.5rem; margin-bottom:8px;">See how it all connects</h2>
+        <p class="muted">Degrees, roles, publications, patents, certifications, talks, and media coverage — as one interactive, explorable graph.</p>
       </div>
-      <div class="kg-canvas-wrap" id="kg-canvas-wrap">
-        <svg id="kg-svg" role="img" aria-label="Interactive knowledge graph of degrees, roles, research areas, publications, patents, certifications, and media coverage"></svg>
-      </div>
-      <div class="graph-detail" id="graph-detail-content">
-        <!-- filled by graph.js -->
-      </div>
-      <div class="graph-hint">Drag nodes to rearrange · scroll or pinch to zoom · click a node for details · click a legend chip to filter by category</div>
+      <a href="explore.html" class="btn btn-primary">Open the knowledge graph →</a>
     </div>
   </section>
 
@@ -115,7 +107,7 @@
           <span class="tag">Scholar · 247 citations</span>
         </div>
         <h3>Graph &amp; ML for critical infrastructure security</h3>
-        <p>15+ peer-reviewed publications spanning smart grid bad-data detection, mobile network vulnerability analysis, and GNN-based defenses.</p>
+        <p><span class="hl">15+ peer-reviewed publications</span> spanning smart grid bad-data detection, mobile network vulnerability analysis, and GNN-based defenses.</p>
         <div class="card-footer">
           <a href="publications.html">Browse publications →</a>
         </div>
@@ -151,7 +143,5 @@
 </footer>
 
 <script src="js/main.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
-<script src="js/graph.js"></script>
 </body>
 </html>

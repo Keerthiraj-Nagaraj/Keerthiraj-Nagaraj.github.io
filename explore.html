@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Explore — Keerthiraj Nagaraj</title>
+<meta name="description" content="An interactive knowledge graph connecting Keerthiraj Nagaraj's degrees, roles, publications, patents, certifications, talks, and media coverage.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500..700&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="page-explore">
+
+<header class="site-header">
+  <nav class="nav">
+    <a href="index.html" class="nav-brand"><span class="nav-node"></span> Keerthiraj Nagaraj</a>
+    <button class="nav-toggle" aria-label="Toggle navigation">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="explore.html" class="active">Explore</a>
+      <a href="career.html">Career</a>
+      <a href="education.html">Education</a>
+      <a href="research.html">Research</a>
+      <a href="publications.html">Publications</a>
+      <a href="certifications.html">Certifications</a>
+      <a href="projects.html">Projects</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="page-hero wrap-wide">
+    <div class="node-tag">Explore</div>
+    <h1>How it all connects</h1>
+    <p>Degrees, roles, publications, patents, certifications, talks, and media coverage — one graph, expanded from a career spine running from PES University through the University of Florida to Palo Alto Networks.</p>
+  </section>
+
+  <section class="section wrap-wide fade-in" style="border-bottom:none;">
+    <div class="kg-panel">
+      <div class="kg-controls">
+        <div class="kg-legend" id="kg-legend"></div>
+        <div class="kg-search"><input type="text" id="kg-search-input" placeholder="Search the graph…" aria-label="Search the knowledge graph"></div>
+      </div>
+      <div class="kg-canvas-wrap" id="kg-canvas-wrap">
+        <svg id="kg-svg" role="img" aria-label="Interactive knowledge graph of degrees, roles, research areas, publications, patents, certifications, talks, and media coverage"></svg>
+      </div>
+      <div class="graph-detail" id="graph-detail-content">
+        <!-- filled by graph.js -->
+      </div>
+      <div class="graph-hint">Drag nodes to rearrange · scroll or pinch to zoom · click a node for details · click a legend chip to filter by category</div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer wrap">
+  <div class="footer-grid">
+    <div>
+      <div class="nav-brand" style="margin-bottom:10px;"><span class="nav-node"></span> Keerthiraj Nagaraj</div>
+      <p class="footer-note">Applied AI Researcher — Web &amp; AI Security<br>Santa Clara, CA</p>
+    </div>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/keerthirajnagaraj" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/Keerthiraj-Nagaraj" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://scholar.google.com/citations?hl=en&user=zA0x51YAAAAJ" target="_blank" rel="noopener">Scholar</a>
+      <a href="mailto:keerthi.n250@gmail.com">Email</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="js/graph.js"></script>
+</body>
+</html>

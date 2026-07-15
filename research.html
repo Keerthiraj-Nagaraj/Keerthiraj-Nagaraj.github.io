@@ -7,10 +7,10 @@
 <meta name="description" content="Unit 42 threat research, timely threat intelligence IOC releases, and media coverage by Keerthiraj Nagaraj.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500..700&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="page-research">
 
 <header class="site-header">
   <nav class="nav">
@@ -20,6 +20,8 @@
     </button>
     <div class="nav-links">
       <a href="index.html">Home</a>
+      <a href="explore.html">Explore</a>
+      <a href="career.html">Career</a>
       <a href="education.html">Education</a>
       <a href="research.html" class="active">Research</a>
       <a href="publications.html">Publications</a>
@@ -32,7 +34,7 @@
 
 <main>
   <section class="page-hero wrap">
-    <div class="node-tag">Unit 42 &amp; Threat Intel</div>
+    <div class="node-tag">Research</div>
     <h1>Threat Research</h1>
     <p>Published research at Unit 42 (Palo Alto Networks), timely threat-intel IOC releases, and the media coverage that followed.</p>
   </section>
@@ -40,7 +42,7 @@
   <!-- ===== Flagship Unit 42 articles ===== -->
   <section class="section wrap fade-in">
     <div class="section-head">
-      <div class="node-tag">Unit 42 Research</div>
+      <div class="node-tag">Unit 42</div>
       <h2>Flagship research articles</h2>
       <p>Full author archive at <a href="https://unit42.paloaltonetworks.com/author/keerthiraj-nagaraj/" target="_blank" rel="noopener">unit42.paloaltonetworks.com</a>.</p>
     </div>
@@ -57,8 +59,7 @@
         </div>
       </div>
       <div class="featured-impact">
-        <span class="impact-n">9</span>
-        <span class="impact-lbl">news outlets<br>covered this</span>
+        <span class="impact-lbl">Widely covered<br>in security press ↓</span>
       </div>
     </div>
 
@@ -86,19 +87,31 @@
     </div>
   </section>
 
-  <!-- ===== Conference talks ===== -->
+  <!-- ===== Speaking & panels ===== -->
   <section class="section wrap fade-in">
     <div class="section-head">
       <div class="node-tag">Speaking</div>
-      <h2>Conference talks</h2>
+      <h2>Speaking &amp; panels</h2>
     </div>
-    <div class="card article-card talk-card">
-      <div class="art-meta">Virus Bulletin 2024 (VB2024)</div>
-      <h3>Proactively Hunting for Low-Reputed Infrastructure Used by Large Cybercrimes and APTs</h3>
-      <p>Presented approach for using smart crawling and Graph AI to proactively discover stealthy malicious domains, files, and low-reputation IPs — with case studies on Gamaredon, FIN7, and a large postal-impersonation campaign, ahead of detection by services like VirusTotal.</p>
-      <div class="card-footer">
-        <a href="https://www.virusbulletin.com/conference/vb2024/abstracts/proactively-hunting-low-reputed-infrastructure-used-large-cybercrimes-and-apts/" target="_blank" rel="noopener">Talk abstract ↗</a>
-        <span class="muted">M. Nabeel, K. Nagaraj, J. Szurdi, A. Starov</span>
+    <div class="grid-2">
+      <div class="card article-card talk-card">
+        <div class="art-meta">Conference Talk · Virus Bulletin 2024 (VB2024)</div>
+        <h3>Proactively Hunting for Low-Reputed Infrastructure Used by Large Cybercrimes and APTs</h3>
+        <p>Presented approach for using smart crawling and Graph AI to proactively discover stealthy malicious domains, files, and low-reputation IPs — with case studies on Gamaredon, FIN7, and a large postal-impersonation campaign, ahead of detection by services like VirusTotal.</p>
+        <div class="card-footer">
+          <a href="https://www.virusbulletin.com/conference/vb2024/abstracts/proactively-hunting-low-reputed-infrastructure-used-large-cybercrimes-and-apts/" target="_blank" rel="noopener">Talk abstract ↗</a>
+          <span class="muted">M. Nabeel, K. Nagaraj, J. Szurdi, A. Starov</span>
+        </div>
+      </div>
+
+      <div class="card article-card talk-card">
+        <div class="art-meta">Invited Panel · WiCyS Webinar</div>
+        <h3>Can AI Agents Make You "Cyber-Smarter"?</h3>
+        <p>Invited panelist for the Women in CyberSecurity (WiCyS) webinar exploring the shift from chatbots to autonomous AI agents in security operations — automation opportunities alongside the emerging risks to watch for.</p>
+        <div class="card-footer">
+          <a href="https://www.wicys.org/event/webinar-can-ai-agents-make-you-cyber-smarter/" target="_blank" rel="noopener">Event page ↗</a>
+          <span class="muted">Jul 14, 2026 · WiCyS</span>
+        </div>
       </div>
     </div>
   </section>
@@ -111,6 +124,7 @@
       <p>Independent coverage of the AI-hallucinated domain research across security trade press.</p>
     </div>
     <div class="media-strip">
+      <a class="media-chip" href="https://www.business-standard.com/technology/artificial-intelligence/what-is-ai-squatting-an-emerging-cyber-threat-targeting-ai-hallucinations-126071400654_1.html" target="_blank" rel="noopener"><span class="dot"></span> Business Standard</a>
       <a class="media-chip" href="https://www.darkreading.com/endpoint-security/phantom-squatting-ai-driven-supply-chain-threat" target="_blank" rel="noopener"><span class="dot"></span> Dark Reading</a>
       <a class="media-chip" href="https://thehackernews.com/2026/07/phantom-squatting-uses-ai-hallucinated.html" target="_blank" rel="noopener"><span class="dot"></span> The Hacker News</a>
       <a class="media-chip" href="https://www.scworld.com/brief/attackers-exploit-ai-hallucinated-web-domains-through-phantom-squatting" target="_blank" rel="noopener"><span class="dot"></span> SC Media</a>
