@@ -1,6 +1,6 @@
 // ===========================================================
 // Shared site behavior: nav toggle, scroll-reveal, GitHub stats,
-// hero canvas animation, back-to-top
+// ambient background canvas, back-to-top
 // ===========================================================
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -46,8 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Hero canvas — animated graph particle network
-  initHeroCanvas();
+  // Ambient background — animated graph particle network, every page
+  initBgCanvas();
 
   // Back-to-top button (injected dynamically)
   const btn = document.createElement('button');
@@ -61,17 +61,20 @@ document.addEventListener('DOMContentLoaded', () => {
   btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 });
 
-function initHeroCanvas() {
-  const canvas = document.getElementById('hero-canvas');
-  if (!canvas) return;
+function initBgCanvas() {
+  const canvas = document.createElement('canvas');
+  canvas.id = 'bg-canvas';
+  canvas.setAttribute('aria-hidden', 'true');
+  document.body.prepend(canvas);
+
   const ctx = canvas.getContext('2d');
-  let W, H, nodes;
+  let W, H, nodes, running = true, rafId;
 
   const COLORS = ['76,95,213', '11,114,133', '232,89,12'];
 
   function resize() {
-    W = canvas.width  = canvas.offsetWidth;
-    H = canvas.height = canvas.offsetHeight;
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
   }
 
   function makeNodes() {
@@ -119,7 +122,7 @@ function initHeroCanvas() {
       if (n.y < 0 || n.y > H) n.vy *= -1;
     });
 
-    requestAnimationFrame(draw);
+    if (running) rafId = requestAnimationFrame(draw);
   }
 
   resize();
@@ -127,4 +130,13 @@ function initHeroCanvas() {
   draw();
 
   window.addEventListener('resize', () => { resize(); makeNodes(); }, { passive: true });
+
+  document.addEventListener('visibilitychange', () => {
+    running = !document.hidden;
+    if (running) {
+      draw();
+    } else {
+      cancelAnimationFrame(rafId);
+    }
+  });
 }
