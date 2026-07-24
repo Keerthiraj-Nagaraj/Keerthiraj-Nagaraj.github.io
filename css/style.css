@@ -59,16 +59,31 @@ body.page-explore, body.page-education, body.page-publications, body.page-projec
 body.page-contact { --accent: var(--ink); --accent-soft: var(--slate-soft); }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; background: var(--paper); }
 
 body {
   margin: 0;
-  background: var(--paper);
+  background: transparent;
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  position: relative;
+}
+
+/* Ambient gradient tint — fixed, full-viewport, behind every page.
+   Cards/panels stay fully opaque, so this only shows in the negative
+   space and behind plain body text, same as the homepage hero always did. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(135deg,
+    rgba(250,88,45,0.07) 0%,
+    rgba(0,33,165,0.05) 100%);
+  pointer-events: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -836,7 +851,8 @@ p { margin: 0; }
 .page-hero p { color: var(--ink-soft); font-size: 1.05rem; margin-top: 14px; max-width: 640px; }
 
 /* ===========================================================
-   Hero — animated canvas background + gradient tint
+   Hero — animated canvas background (gradient tint is now global,
+   see body::before near the top of this file)
    =========================================================== */
 .hero {
   position: relative;
@@ -846,15 +862,6 @@ p { margin: 0; }
   flex-direction: column;
   justify-content: center;
   box-sizing: border-box;
-}
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg,
-    rgba(250,88,45,0.07) 0%,
-    rgba(0,33,165,0.05) 100%);
-  z-index: 0;
 }
 #hero-canvas {
   position: absolute;
