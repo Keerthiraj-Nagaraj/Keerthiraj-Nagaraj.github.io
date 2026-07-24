@@ -29,12 +29,6 @@
   --line: #DCE3E8;
   --line-strong: #C3CDD6;
 
-  /* Glassmorphism surfaces — translucent fills over the fixed ambient backdrop */
-  --glass-surface: rgba(255,255,255,0.55);
-  --glass-surface-strong: rgba(255,255,255,0.72);
-  --glass-border: rgba(255,255,255,0.45);
-  --glass-blur: 16px;
-
   /* Brand colors — University of Florida + Palo Alto Networks, blended into a
      per-page accent instead of one flat color everywhere. UF's and PAN's
      oranges are near-identical hues, so they share one token. */
@@ -65,21 +59,16 @@ body.page-explore, body.page-education, body.page-publications, body.page-projec
 body.page-contact { --accent: var(--ink); --accent-soft: var(--slate-soft); }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; background: var(--paper); }
+html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  background: transparent;
+  background: var(--paper);
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  position: relative;
-}
-
-@media (max-width: 600px) {
-  :root { --glass-blur: 10px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -125,26 +114,6 @@ p { margin: 0; }
   opacity: 0.5;
 }
 
-/* ---------- Ambient page backdrop (particle canvas + gradient tint) ---------- */
-#bg-canvas {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -2;
-  pointer-events: none;
-}
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(135deg,
-    rgba(250,88,45,0.08) 0%,
-    rgba(0,33,165,0.06) 100%);
-  pointer-events: none;
-}
-
 /* ---------- Header / Nav ---------- */
 .site-header {
   position: sticky;
@@ -152,7 +121,6 @@ body::before {
   z-index: 50;
   background: rgba(246, 248, 250, 0.88);
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
 }
 
@@ -221,9 +189,7 @@ body::before {
     position: fixed;
     top: 61px;
     left: 0; right: 0;
-    background: var(--glass-surface-strong);
-    backdrop-filter: blur(var(--glass-blur));
-    -webkit-backdrop-filter: blur(var(--glass-blur));
+    background: var(--paper-raised);
     border-bottom: 1px solid var(--line);
     flex-direction: column;
     gap: 0;
@@ -287,33 +253,28 @@ body::before {
   font-family: var(--font-mono);
   font-size: 0.85rem;
   font-weight: 500;
-  border: 1px solid var(--glass-border);
-  background: var(--glass-surface);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--line-strong);
+  background: var(--paper-raised);
   color: var(--ink);
   cursor: pointer;
   transition: border-color 0.15s, transform 0.15s;
 }
 .btn:hover { text-decoration: none; border-color: var(--accent); transform: translateY(-1px); }
-.btn-primary { background: var(--ink); color: var(--paper-raised); border-color: var(--ink); backdrop-filter: none; -webkit-backdrop-filter: none; }
+.btn-primary { background: var(--ink); color: var(--paper-raised); border-color: var(--ink); }
 .btn-primary:hover { border-color: var(--ink); background: #1B2733; }
 .btn svg { width: 15px; height: 15px; }
 
 /* ---------- Cards ---------- */
 .card {
-  background: var(--glass-surface);
-  border: 1px solid var(--glass-border);
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 24px;
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 8px 24px -14px rgba(16, 24, 32, 0.12);
   transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
 }
 .card:hover {
   border-color: var(--accent);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 16px 40px -16px rgba(16, 24, 32, 0.18);
+  box-shadow: 0 8px 24px -12px rgba(16, 24, 32, 0.15);
   transform: translateY(-2px);
 }
 
@@ -438,7 +399,7 @@ body::before {
   object-fit: cover;
   object-position: 50% 22%;
   border: 3px solid var(--accent);
-  box-shadow: 0 20px 50px -16px rgba(16, 24, 32, 0.2);
+  box-shadow: 0 16px 40px -12px rgba(16, 24, 32, 0.25);
 }
 @media (max-width: 860px) {
   .hero-top { gap: 24px; }
@@ -477,9 +438,7 @@ body::before {
   overflow: hidden;
 }
 .stat {
-  background: var(--glass-surface);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
+  background: var(--paper-raised);
   padding: 20px 18px;
   text-align: left;
 }
@@ -518,14 +477,11 @@ body::before {
    Knowledge Graph (D3, homepage signature element)
    =========================================================== */
 .kg-panel {
-  background: var(--glass-surface);
-  border: 1px solid var(--glass-border);
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 16px 16px 0;
   overflow: hidden;
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
 }
 .kg-controls {
   display: flex;
@@ -547,10 +503,8 @@ body::before {
   gap: 6px;
   padding: 5px 12px;
   border-radius: 999px;
-  border: 1px solid var(--glass-border);
-  background: var(--glass-surface);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--line-strong);
+  background: var(--paper-raised);
   font-family: var(--font-mono);
   font-size: 0.72rem;
   color: var(--ink-soft);
@@ -674,16 +628,14 @@ body::before {
   font-size: 0.78rem;
   padding: 8px 16px;
   border-radius: 999px;
-  border: 1px solid var(--glass-border);
-  background: var(--glass-surface);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--line-strong);
+  background: var(--paper-raised);
   cursor: pointer;
   color: var(--ink-soft);
   transition: all 0.15s;
 }
 .filter-btn:hover { border-color: var(--teal); color: var(--ink); }
-.filter-btn.active { background: var(--ink); color: var(--paper-raised); border-color: var(--ink); backdrop-filter: none; -webkit-backdrop-filter: none; }
+.filter-btn.active { background: var(--ink); color: var(--paper-raised); border-color: var(--ink); }
 
 .pub-list { display: flex; flex-direction: column; gap: 1px; }
 .pub-item {
@@ -695,7 +647,7 @@ body::before {
   border-bottom: 1px solid var(--line);
   transition: background 0.15s;
 }
-.pub-item:hover { background: var(--glass-surface); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); }
+.pub-item:hover { background: var(--paper-raised); }
 .pub-year { font-family: var(--font-mono); color: var(--ink-faint); font-size: 0.85rem; padding-top: 2px; }
 .pub-body h4 { font-size: 1.02rem; margin-bottom: 6px; font-weight: 600; }
 .pub-venue { color: var(--ink-soft); font-size: 0.9rem; margin-bottom: 8px; }
@@ -738,7 +690,7 @@ body::before {
   border-bottom: 1px solid var(--line);
   transition: background 0.15s;
 }
-.cert-item:hover { background: var(--glass-surface); backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); }
+.cert-item:hover { background: var(--paper-raised); }
 .cert-date { font-family: var(--font-mono); color: var(--ink-faint); font-size: 0.85rem; padding-top: 2px; }
 .cert-body h4 { font-size: 1rem; margin-bottom: 4px; font-weight: 600; }
 .cert-issuer { color: var(--ink-soft); font-size: 0.88rem; }
@@ -800,11 +752,8 @@ body::before {
   gap: 8px;
   padding: 9px 16px;
   border-radius: 999px;
-  border: 1px solid var(--glass-border);
-  background: var(--glass-surface);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+  border: 1px solid var(--line-strong);
+  background: var(--paper-raised);
   font-size: 0.88rem;
   color: var(--ink);
 }
@@ -816,9 +765,7 @@ body::before {
   border-radius: var(--radius);
   padding: 20px 22px;
   margin-bottom: 14px;
-  background: var(--glass-surface-strong);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
+  background: var(--paper-raised);
 }
 .intel-item .ii-top {
   display: flex;
@@ -889,16 +836,35 @@ body::before {
 .page-hero p { color: var(--ink-soft); font-size: 1.05rem; margin-top: 14px; max-width: 640px; }
 
 /* ===========================================================
-   Hero — layout only; ambient backdrop is now global (see
-   #bg-canvas / body::before near the top of this file)
+   Hero — animated canvas background + gradient tint
    =========================================================== */
 .hero {
+  position: relative;
+  overflow: hidden;
   padding: 96px 0 72px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   box-sizing: border-box;
 }
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+    rgba(250,88,45,0.07) 0%,
+    rgba(0,33,165,0.05) 100%);
+  z-index: 0;
+}
+#hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+.hero > * { position: relative; z-index: 1; }
 
 /* ===========================================================
    Color-coded hero stats
@@ -913,9 +879,7 @@ body::before {
 .featured-research {
   border: 1.5px solid var(--accent);
   border-left: 5px solid var(--accent);
-  background: linear-gradient(135deg, var(--glass-surface-strong) 55%, var(--accent-soft) 100%);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
+  background: linear-gradient(135deg, var(--paper-raised) 55%, var(--accent-soft) 100%);
   border-radius: var(--radius);
   padding: 32px 36px;
   margin-bottom: 28px;
@@ -926,7 +890,7 @@ body::before {
   transition: box-shadow 0.2s, transform 0.2s;
 }
 .featured-research:hover {
-  box-shadow: 0 20px 48px -14px rgba(250,88,45,0.18);
+  box-shadow: 0 14px 36px -8px rgba(250,88,45,0.2);
   transform: translateY(-2px);
 }
 .featured-research-badge {
@@ -977,7 +941,7 @@ body::before {
    =========================================================== */
 .talk-card {
   border-left: 4px solid var(--violet);
-  background: linear-gradient(135deg, var(--glass-surface) 70%, var(--violet-soft) 100%);
+  background: linear-gradient(135deg, var(--paper-raised) 70%, var(--violet-soft) 100%);
 }
 
 /* ===========================================================
@@ -1133,18 +1097,4 @@ body::before {
   color: var(--ink-soft);
   margin-top: 8px;
   line-height: 1.8;
-}
-
-/* ===========================================================
-   Print — disable ambient backdrop and translucency, keep pages legible
-   =========================================================== */
-@media print {
-  #bg-canvas, body::before { display: none !important; }
-  .card, .media-chip, .kg-panel, .kg-chip, .intel-item,
-  .featured-research, .talk-card, .nav-links, .stat, .filter-btn,
-  .pub-item:hover, .cert-item:hover {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    background: var(--paper-raised) !important;
-  }
 }
