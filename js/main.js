@@ -98,7 +98,7 @@ function initBgCanvas() {
         const d  = Math.sqrt(dx * dx + dy * dy);
         if (d < 160) {
           ctx.beginPath();
-          ctx.strokeStyle = `rgba(11,114,133,${(0.06 * (1 - d / 160)).toFixed(3)})`;
+          ctx.strokeStyle = `rgba(11,114,133,${(0.13 * (1 - d / 160)).toFixed(3)})`;
           ctx.lineWidth = 1;
           ctx.moveTo(nodes[i].x, nodes[i].y);
           ctx.lineTo(nodes[j].x, nodes[j].y);
@@ -110,8 +110,8 @@ function initBgCanvas() {
     nodes.forEach(n => {
       ctx.beginPath();
       ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-      ctx.fillStyle   = `rgba(${n.c},0.10)`;
-      ctx.strokeStyle = `rgba(${n.c},0.22)`;
+      ctx.fillStyle   = `rgba(${n.c},0.18)`;
+      ctx.strokeStyle = `rgba(${n.c},0.38)`;
       ctx.lineWidth = 1.2;
       ctx.fill();
       ctx.stroke();

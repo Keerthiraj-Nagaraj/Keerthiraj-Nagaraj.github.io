@@ -144,17 +144,6 @@ body::before {
     rgba(0,33,165,0.06) 100%);
   pointer-events: none;
 }
-/* Readability wash — sits above the canvas/gradient, below all page
-   content, so body copy that isn't inside a card (career/education/
-   publications list rows) doesn't have particle dots fighting the text. */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background: rgba(246,248,250,0.55);
-  pointer-events: none;
-}
 
 /* ---------- Header / Nav ---------- */
 .site-header {
