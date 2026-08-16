@@ -247,7 +247,7 @@ p { margin: 0; }
 .section:last-of-type { border-bottom: none; }
 
 .section-head {
-  max-width: 640px;
+  max-width: 780px;
   margin-bottom: 40px;
 }
 .section-head h2 {
@@ -851,7 +851,7 @@ p { margin: 0; }
   padding-bottom: 8px;
 }
 .page-hero h1 { font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 2.6rem); }
-.page-hero p { color: var(--ink-soft); font-size: 1.05rem; margin-top: 14px; max-width: 640px; }
+.page-hero p { color: var(--ink-soft); font-size: 1.05rem; margin-top: 14px; max-width: 780px; }
 
 /* ===========================================================
    Hero — animated canvas background (gradient tint is now global,
