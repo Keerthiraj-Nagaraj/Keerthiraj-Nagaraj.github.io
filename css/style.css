@@ -446,7 +446,7 @@ p { margin: 0; }
 }
 .stat-row {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1px;
   background: var(--line);
   border: 1px solid var(--line);
@@ -473,16 +473,20 @@ p { margin: 0; }
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
-.stat-media {
+.stat-media, .stat-tti, .stat-reports {
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-decoration: none;
   transition: background 0.15s;
 }
-.stat-media .lbl { transition: color 0.15s; }
+.stat-media .lbl, .stat-tti .lbl, .stat-reports .lbl { transition: color 0.15s; }
 .stat-media:hover { background: var(--paper); }
 .stat-media:hover .lbl { color: var(--teal); }
+.stat-tti:hover { background: var(--paper); }
+.stat-tti:hover .lbl { color: var(--sky); }
+.stat-reports:hover { background: var(--paper); }
+.stat-reports:hover .lbl { color: var(--coral); }
 @media (max-width: 700px) {
   .stat-row { grid-template-columns: repeat(2, 1fr); }
 }
@@ -882,6 +886,8 @@ p { margin: 0; }
 .stat-citations .num { color: var(--teal); }
 .stat-pubs      .num { color: var(--violet); }
 .stat-patents   .num { color: var(--amber); }
+.stat-tti       .num { color: var(--sky); }
+.stat-reports   .num { color: var(--coral); }
 
 /* ===========================================================
    Featured research card (flagship full-width article)
