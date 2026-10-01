@@ -474,20 +474,26 @@ p { margin: 0; }
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
-.stat-media, .stat-tti, .stat-reports {
+.stat-media, .stat-tti, .stat-reports, .stat-citations, .stat-pubs, .stat-patents {
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-decoration: none;
   transition: background 0.15s;
 }
-.stat-media .lbl, .stat-tti .lbl, .stat-reports .lbl { transition: color 0.15s; }
+.stat-media .lbl, .stat-tti .lbl, .stat-reports .lbl, .stat-citations .lbl, .stat-pubs .lbl, .stat-patents .lbl { transition: color 0.15s; }
 .stat-media:hover { background: var(--paper); }
 .stat-media:hover .lbl { color: var(--teal); }
 .stat-tti:hover { background: var(--paper); }
 .stat-tti:hover .lbl { color: var(--sky); }
 .stat-reports:hover { background: var(--paper); }
 .stat-reports:hover .lbl { color: var(--coral); }
+.stat-citations:hover { background: var(--paper); }
+.stat-citations:hover .lbl { color: var(--teal); }
+.stat-pubs:hover { background: var(--paper); }
+.stat-pubs:hover .lbl { color: var(--violet); }
+.stat-patents:hover { background: var(--paper); }
+.stat-patents:hover .lbl { color: var(--amber); }
 @media (max-width: 700px) {
   .stat-row { grid-template-columns: repeat(2, 1fr); }
 }
