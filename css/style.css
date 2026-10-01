@@ -466,6 +466,7 @@ p { margin: 0; }
   color: var(--ink);
   display: block;
 }
+.stat .num.num-date { font-size: 1.3rem; white-space: nowrap; }
 .stat .lbl {
   font-family: var(--font-mono);
   font-size: 0.72rem;
